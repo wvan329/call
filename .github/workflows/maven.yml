@@ -1,3 +1,6 @@
+env:
+  APP_NAME: call
+
 #action的名字
 name: Java CI with Maven
 #on表示event触发器，也就是在main分支推送代码/提交pr时会触发这个action
@@ -40,13 +43,13 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Deploy to Server
-        if: env.skip != 'true'  # 根据 skip 环境变量判断是否执行此步骤
+        if: env.skip != 'true'
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          SOURCE: 'target/test.jar'
+          SOURCE: target/${{ env.APP_NAME }}.jar
           REMOTE_HOST: 59.110.35.198
           REMOTE_USER: root
-          TARGET: '/var/lib/docker/volumes/call/_data/call.jar'
+          TARGET: /var/lib/docker/volumes/${{ env.APP_NAME }}/_data/${{ env.APP_NAME }}.jar
           SCRIPT_AFTER: |
-            docker restart call
+            docker restart ${{ env.APP_NAME }}
