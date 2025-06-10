@@ -1,0 +1,7 @@
+project:
+  url: 172.17.0.1
+  password: swqslwlROOT1
+
+logging:
+  file:
+    name: /app/logs  # 日志文件名，全路径

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!-- 日志输出格式 -->
+    <!--    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>-->
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss} [%level]-%msg%n"/>
+
+    <!-- 控制台输出 -->
+    <appender name="console_debug" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>DEBUG</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!-- 控制台输出 -->
+    <appender name="console_error" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>ERROR</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--        <file>${log.path}/error/error.log</file>-->
+        <file>${LOG_FILE}/error/error.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${LOG_FILE}/error/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--单个文件最大10m -->
+            <maxFileSize>1MB</maxFileSize>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>20</maxHistory>
+            <!-- 日志文件总大小1GB，超过会自动删掉旧日志 -->
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>ERROR</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}/debug/debug.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${LOG_FILE}/debug/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--单个文件最大10m -->
+            <maxFileSize>1MB</maxFileSize>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>20</maxHistory>
+            <!-- 日志文件总大小1GB，超过会自动删掉旧日志 -->
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>DEBUG</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <springProfile name="dev">
+        <logger name="cn.mp.mapper" level="DEBUG" additivity="false">
+            <appender-ref ref="console_debug"/>
+            <appender-ref ref="debug"/>
+        </logger>
+        <root level="error">
+            <appender-ref ref="console_error"/>
+            <appender-ref ref="error"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="cn.mp.mapper" level="DEBUG" additivity="false">
+            <appender-ref ref="debug"/>
+        </logger>
+        <root level="error">
+            <appender-ref ref="error"/>
+        </root>
+    </springProfile>
+</configuration>
