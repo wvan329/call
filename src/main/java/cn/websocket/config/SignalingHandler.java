@@ -31,6 +31,13 @@ public class SignalingHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         String payload = message.getPayload();
 
+        // --- 这是关键的修改点 ---
+        if ("ping".equals(payload)) {
+            // 如果是 ping 消息，则回复 pong，不进行广播
+            session.sendMessage(new TextMessage("pong"));
+            return;
+        }
+
         // 使用 Jackson 或其他 JSON 库来解析和修改消息
         ObjectNode node = (ObjectNode) mapper.readTree(payload);
         node.put("from", sessionId); // 为消息添加 'from' 字段
