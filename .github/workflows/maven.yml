@@ -2,7 +2,6 @@
 name: Java CI with Maven
 #on表示event触发器，也就是在main分支推送代码/提交pr时会触发这个action
 on:
-  workflow_dispatch:
   push:
     branches: [ "master" ]
 
