@@ -24,7 +24,7 @@ public class SignalingHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         for (WebSocketSession s : sessions.values()) {
-            if (!s.getId().equals(session.getId())) {
+            if (s.isOpen() && !s.getId().equals(session.getId())) {
                 s.sendMessage(message); // 简单广播给其他人
             }
         }
