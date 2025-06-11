@@ -20,10 +20,16 @@ public class SignalingHandler extends TextWebSocketHandler {
     ObjectMapper mapper;
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) {
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String sessionId = session.getId();
         sessions.put(sessionId, session);
         System.out.println("Connected: " + sessionId);
+
+        // 发送 welcome 消息，告诉客户端自己的sessionId
+        ObjectNode node = mapper.createObjectNode();
+        node.put("type", "welcome");
+        node.put("from", sessionId);
+        session.sendMessage(new TextMessage(node.toString()));
     }
 
     @Override
