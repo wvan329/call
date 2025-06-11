@@ -28,9 +28,8 @@ jobs:
       - name: Extract artifactId from pom.xml
         if: env.skip != 'true'  # 根据 skip 环境变量判断是否执行此步骤
         run: |
-          APP_NAME=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-          echo "Extracted APP_NAME=$APP_NAME"
-          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+          artifactId=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='artifactId']/text()" pom.xml)
+          echo "APP_NAME=$artifactId" >> $GITHUB_ENV
 
       #往虚拟机安装JDK环境
       - name: Set up JDK 17
