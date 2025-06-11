@@ -12,7 +12,7 @@ spring:
       # Redis 数据库索引（默认为0）
       database: 0
       # Redis 服务器地址
-      host: aliyun
+      host: ${project.url}
       # Redis 服务器连接端口
       port: 6379
       # Redis 服务器连接密码（默认为空）
@@ -41,24 +41,34 @@ spring:
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
-  # token 名称（同时也是 cookie 名称）
-  token-name: satoken-myproject
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效 432000表示5天
   timeout: 432000
   # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
-  active-timeout: -1
+  #active-timeout: -1 #这个默认值就是-1，这个不用管，用不到。
+
   # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  #当false不允许并发时，每次都会生成新的token，下面的is-share允许共享没有任何作用，看过源码了
   is-concurrent: true
+
   # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
   is-share: false
+
+  #总结：当concurrent和share同时为ture时才会复用token，否则一定是新生成token。
+  #当允许并发时，每次用新token，如果允许share，那么复用。
+  #当不允许并发时，每次用新token，顶掉旧token，不管share是什么不会复用。
+
   # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
   token-style: uuid
   # 是否输出操作日志
   is-log: false
   # 打印 banner
   is-print: false
+  # token 名称（同时也是 cookie 名称）
+  token-name: satoken-myproject
   # 是否读取 cookie 和 body 中的 token，全部不读
-  # 后端只往响应头写，前端只往也只往请求头写
+  # 前端只往请求头写token
+  # 后端不写入响应头token
+  # tokenname就是上面配置的
   is-read-cookie: false
   is-read-body: false
 

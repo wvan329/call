@@ -33,8 +33,8 @@ public class CaptchaController {
                 "captcha": "%s"
                 """, captchaId, captcha.getCode());
 
-        // 3. 把验证码文字存到Redis，5分钟过期 todo改成5分钟
-        redis.set("captcha:" + captchaId, captcha.getCode(), 5 * 60 *6000);
+        // 3. 把验证码文字存到Redis，单位秒， todo改成5分钟
+        redis.set("captcha:" + captchaId, captcha.getCode());
 
         // 4. 把图片转Base64字符串
         String base64Img = Base64.getEncoder().encodeToString(captcha.getImageBytes());
