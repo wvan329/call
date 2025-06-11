@@ -22,7 +22,6 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%B)
           if [[ "$COMMIT_MSG" != "yes" ]]; then
             echo "skip=true" >> $GITHUB_ENV  # 设置环境变量 skip
-            exit 0
           fi
 
       #把pom文件里的artifactId当作应用名
