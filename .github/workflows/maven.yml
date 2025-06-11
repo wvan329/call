@@ -1,6 +1,3 @@
-env:
-  APP_NAME: call
-
 #action的名字
 name: Java CI with Maven
 #on表示event触发器，也就是在main分支推送代码/提交pr时会触发这个action
@@ -27,6 +24,12 @@ jobs:
             echo "skip=true" >> $GITHUB_ENV  # 设置环境变量 skip
             exit 0
           fi
+
+      #把pom文件里的artifactId当作应用名
+      - name: Extract artifactId from pom.xml
+        if: env.skip != 'true'  # 根据 skip 环境变量判断是否执行此步骤
+        run: |
+          echo "APP_NAME=$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)" >> $GITHUB_ENV
 
       #往虚拟机安装JDK环境
       - name: Set up JDK 17
