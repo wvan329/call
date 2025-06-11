@@ -24,11 +24,9 @@ jobs:
             echo "skip=true" >> $GITHUB_ENV  # 设置环境变量 skip
           fi
 
-      #把pom文件里的artifactId当作应用名
-      - name: Extract artifactId from pom.xml
-        if: env.skip != 'true'  # 根据 skip 环境变量判断是否执行此步骤
+      - name: Extract artifactId using Maven
         run: |
-          artifactId=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='artifactId']/text()" pom.xml)
+          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
           echo "APP_NAME=$artifactId" >> $GITHUB_ENV
 
       #往虚拟机安装JDK环境
