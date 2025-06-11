@@ -11,7 +11,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     private SignalingHandler signalingHandler;
     @Autowired
-    private SignalingHandler fileTransferHandler;
+    private FileTransferHandler fileTransferHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
