@@ -9,11 +9,16 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
-    private SignalingHandler handler;
+    private SignalingHandler signalingHandler;
+    @Autowired
+    private SignalingHandler fileTransferHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(handler, "/ws");
-//                .setAllowedOrigins("59.110.35.198");
+        registry.addHandler(signalingHandler, "/ws/voice");
+//                .setAllowedOrigins("*");
+
+        registry.addHandler(fileTransferHandler, "/ws/file");
+//                .setAllowedOrigins("*");
     }
 }
