@@ -26,6 +26,12 @@ public class FileTransferHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String payload = message.getPayload();
+
+        // 如果是心跳包，直接回复 pong
+        if ("ping".equals(payload)) {
+            return;
+        }
         // 收到一方的信令消息后转发给另一方
         for (WebSocketSession other : sessions) {
             if (!other.getId().equals(session.getId()) && other.isOpen()) {
