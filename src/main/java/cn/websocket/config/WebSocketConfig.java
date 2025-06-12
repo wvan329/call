@@ -15,10 +15,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(signalingHandler, "/ws/voice");
-//                .setAllowedOrigins("*");
+        registry.addHandler(signalingHandler, "/ws/voice")
+                .setAllowedOrigins("*");
 
-        registry.addHandler(fileTransferHandler, "/ws/file");
-//                .setAllowedOrigins("*");
+        registry.addHandler(fileTransferHandler, "/ws/file")
+                .setAllowedOrigins("*");
     }
 }
