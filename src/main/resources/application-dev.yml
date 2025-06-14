@@ -1,7 +1,0 @@
-project:
-  url: 59.110.35.198
-  password: swqslwlROOT1
-
-logging:
-  file:
-    name: logs  # 日志文件名，全路径
